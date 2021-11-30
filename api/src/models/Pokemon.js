@@ -16,27 +16,27 @@ module.exports = (sequelize) => {
     },
     hp: { 
       type: DataTypes.INTEGER,
-      allowNull: true,
+     
     },
     attack: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+
     },
     defense: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+
     },
     speed: { 
       type: DataTypes.INTEGER,
-      allowNull: true,
+
     },
     height: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+
     },
-    weigth: {
+    weight: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+
     },
     createdInDb: {
       type: DataTypes.BOOLEAN,

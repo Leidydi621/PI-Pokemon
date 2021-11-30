@@ -39,12 +39,8 @@ const getApiInfo = async () => {
 
         }
     })
-       
-  
+    
     return pokemonsData;     
-
-
-
 };
 
 const getDbInfo = async () => {
@@ -78,7 +74,7 @@ router.get('/pokemons', async(req, res)=>{
         }
     })
     if(name){
-        let pokemonName = await pokemonsTotal.filter(el => el.name.toLowerCase().includes(name.toLowerCase()))
+        let pokemonName = await routP.filter(el => el.name.toLowerCase().includes(name.toLowerCase()))
         pokemonName ?
         res.status(200).send(pokemonName) :
         res.status(404).send("This Pokemon doesn't exist");       
@@ -86,6 +82,26 @@ router.get('/pokemons', async(req, res)=>{
         res.status(200).send(routP)
     }
 
+})
+
+router.get('/pokemons/:id', async (req, res) => {
+    const id = req.params.id;
+    const pokemonId = await getAllPokemons();
+    if (id) {
+        let pokemonI;
+        if (id.length > 1 ){
+
+            pokemonI= pokemonId.filter(pokemon => pokemon.id === (id));
+
+        } else {
+            pokemonI= pokemonId.filter(pokemon => pokemon.id === parseInt(id));  
+
+        }
+        pokemonI.length?
+        res.status(200).send(pokemonI):
+        res.status(404).send("This Pokemon doesn't exist");  
+
+    }
 })
 
 router.get('/types', async (req, res)=>{
@@ -99,7 +115,20 @@ router.get('/types', async (req, res)=>{
 
    const allTypes = await Type.findAll();
    res.send(allTypes);
+   console.log(allTypes);
    
 })
+
+
+router.post('/pokemons', async (req, res) => {
+ 
+  
+  if (req.body){
+    console.log('datos por body', req.body);
+    Pokemon.create(req.body).then(pokemonCreated => res.send(pokemonCreated))
+  }
+
+})
+
 
 module.exports = router;
