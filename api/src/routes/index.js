@@ -89,7 +89,7 @@ router.get('/pokemons/:id', async (req, res) => {
     const pokemonId = await getAllPokemons();
     if (id) {
         let pokemonI;
-        if (id.length > 1 ){
+        if (id.length > 2 ){
 
             pokemonI= pokemonId.filter(pokemon => pokemon.id === (id));
 
