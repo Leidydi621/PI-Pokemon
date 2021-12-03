@@ -68,7 +68,7 @@ export default function Home(){
                     {allPokemons.map(c => 
                        
                        <div key={c.name}>
-                         <Card name={c.name} img={c.img}/>
+                         <Card name={c.name} img={c.img} types={c.types.map( e => e.name + " ")}/>
                          
                         </div> 
                       
