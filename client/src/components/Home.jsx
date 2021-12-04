@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPokemons} from "../actions";
 import {Link} from 'react-router-dom';
 import Card from './Card';
+import Paginado from './Paginado';
 
 export default function Home(){
 
@@ -26,6 +27,9 @@ export default function Home(){
             setCurrentPage(currentPage+1);
         }
 
+        const paginado =  (pageNumber) => {
+            setCurrentPage(pageNumber)
+        }
 
 
         useEffect(() => {
@@ -39,10 +43,8 @@ export default function Home(){
           <Link to="/pokemons">Crear Pokemon</Link>
            <h1>POKEMON GO!!</h1>
 
-           
-
-           <button onClick = {prevPage}>Previous</button>
-           <button onClick = {nextPage}>Next</button>
+          
+          
 
            <button>Loading Pokemons</button>
 
@@ -84,7 +86,16 @@ export default function Home(){
                <select>
                    <option value= 'a-z'>A-Z</option>
                </select>
-
+               
+               <br/>
+                
+               <button onClick = {prevPage}>Previous</button>
+               <Paginado
+                pokemonsPerPage = {pokemonsPerPage}
+                allPokemons = {allPokemons.length}
+                paginado = {paginado}
+                />
+                <button onClick = {nextPage}>Next</button>
            
            
            
