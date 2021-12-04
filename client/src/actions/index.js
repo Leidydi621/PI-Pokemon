@@ -21,26 +21,3 @@ export function getPokemons(){
         }
     }
 };
-
-export function filterPokeByTypes (payload){
-
-    return async function loadTypes(){
-        try{
-
-            const types = await axios.get('http://localhost:3001/types')
-            console.log(payload, 'actions')
-            return{
-                type: FILTER_BY_TYPES,
-                payload
-            }
-        }catch(error){
-            console.log(error);
-        }
-    }
-
-}
-
-
-
-
-

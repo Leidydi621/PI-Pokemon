@@ -1,7 +1,7 @@
 import React from "react";
 import {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {getPokemons, filterPokeByTypes} from "../actions";
+import {getPokemons} from "../actions";
 import {Link} from 'react-router-dom';
 import Card from './Card';
 
@@ -31,11 +31,6 @@ export default function Home(){
         useEffect(() => {
           dispatch(getPokemons());
         },[dispatch])
-
-   
-        function handleFilterTypes(e){
-            dispatch(filterPokeByTypes(e.target.value))
-        }
     
 
 
@@ -57,7 +52,7 @@ export default function Home(){
                    <option value= 'desc'>Descending</option>
                </select>
             {/* intentar hacer un map a los types en orden alfabetico y por fuerza*/}
-               <select onChange={e => handleFilterTypes(e)}> 
+               <select > 
                    <option value= 'All'>All</option>
                    <option value= 'bug'>bug</option>
                    <option value= 'dark'>dark</option>
