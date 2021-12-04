@@ -3,12 +3,33 @@ import {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import {getPokemons} from "../actions";
 import {Link} from 'react-router-dom';
-import Card from './Card'
+import Card from './Card';
+//import Paginado from './Paginado';
 
 export default function Home(){
 
         const dispatch = useDispatch()
         const allPokemons = useSelector(state => state.pokemon)
+        const [currentPage, setCurrentPage] = useState(1)
+        const [pokemonsPerPage, setPokemonsPerPage] = useState(12)
+        const indexOfLastPokemon = currentPage * pokemonsPerPage
+        const indexOfFirsPokemon = indexOfLastPokemon - pokemonsPerPage
+        const currentPokemons = allPokemons.slice(indexOfFirsPokemon, indexOfLastPokemon)
+        
+       // const paginado = (pageNumber) => {
+       //     setCurrentPage (pageNumber) 
+       // }
+
+       const prevPage = () => {
+            if (currentPage > 0){
+                setCurrentPage(currentPage-1);
+            }
+        }
+
+        const nextPage = () => {
+            setCurrentPage(currentPage+1);
+        }
+
 
 
         console.log(allPokemons, "home") // muestra en pantalla los pokemons --> debo eliminar este console log
@@ -23,6 +44,10 @@ export default function Home(){
           <Link to="/pokemons">Crear Pokemon</Link>
            <h1>POKEMON GO!!</h1>
            <button>Loading Pokemons</button>
+
+           <button onClick = {prevPage}>Previous</button>
+           <button onClick = {nextPage}>Next</button>
+
 
            <div>
                <select>
@@ -64,8 +89,15 @@ export default function Home(){
                    <option value= 'a-z'>A-Z</option>
                </select>
 
+           
+           
+           
+           
+
+           
+
                
-                    {allPokemons.map(c => 
+                    {currentPokemons.map(c => 
                        
                        <div key={c.name}>
                          <Card name={c.name} img={c.img} types={c.types.map( e => e.name + " ")}/>
