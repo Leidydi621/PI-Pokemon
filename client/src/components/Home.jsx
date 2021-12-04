@@ -1,10 +1,9 @@
 import React from "react";
 import {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {getPokemons} from "../actions";
+import {getPokemons, filterPokeByTypes} from "../actions";
 import {Link} from 'react-router-dom';
 import Card from './Card';
-//import Paginado from './Paginado';
 
 export default function Home(){
 
@@ -16,9 +15,6 @@ export default function Home(){
         const indexOfFirsPokemon = indexOfLastPokemon - pokemonsPerPage
         const currentPokemons = allPokemons.slice(indexOfFirsPokemon, indexOfLastPokemon)
         
-       // const paginado = (pageNumber) => {
-       //     setCurrentPage (pageNumber) 
-       // }
 
        const prevPage = () => {
             if (currentPage > 0){
@@ -32,10 +28,14 @@ export default function Home(){
 
 
 
-        console.log(allPokemons, "home") // muestra en pantalla los pokemons --> debo eliminar este console log
         useEffect(() => {
           dispatch(getPokemons());
         },[dispatch])
+
+   
+        function handleFilterTypes(e){
+            dispatch(filterPokeByTypes(e.target.value))
+        }
     
 
 
@@ -43,6 +43,8 @@ export default function Home(){
         <div>
           <Link to="/pokemons">Crear Pokemon</Link>
            <h1>POKEMON GO!!</h1>
+
+           
 
            <button onClick = {prevPage}>Previous</button>
            <button onClick = {nextPage}>Next</button>
@@ -55,9 +57,8 @@ export default function Home(){
                    <option value= 'desc'>Descending</option>
                </select>
             {/* intentar hacer un map a los types en orden alfabetico y por fuerza*/}
-               <select> 
-                   
-                   <option value= 'type'>Types</option>
+               <select onChange={e => handleFilterTypes(e)}> 
+                   <option value= 'All'>All</option>
                    <option value= 'bug'>bug</option>
                    <option value= 'dark'>dark</option>
                    <option value= 'dragon'>dragon</option>
