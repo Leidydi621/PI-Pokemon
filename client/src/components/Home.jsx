@@ -43,11 +43,11 @@ export default function Home(){
         <div>
           <Link to="/pokemons">Crear Pokemon</Link>
            <h1>POKEMON GO!!</h1>
-           <button>Loading Pokemons</button>
 
            <button onClick = {prevPage}>Previous</button>
            <button onClick = {nextPage}>Next</button>
 
+           <button>Loading Pokemons</button>
 
            <div>
                <select>
