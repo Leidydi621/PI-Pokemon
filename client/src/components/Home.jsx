@@ -1,7 +1,7 @@
 import React from "react";
 import {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {getPokemons} from "../actions";
+import {getPokemons, filterCreated} from "../actions";
 import {Link} from 'react-router-dom';
 import Card from './Card';
 import Paginado from './Paginado';
@@ -36,17 +36,21 @@ export default function Home(){
           dispatch(getPokemons());
         },[dispatch])
     
+        function handleClick(e){
+            e.preventDefault();
+            dispatch(getPokemons());
+        }
+
+        function handleFilterCreated (e){
+            dispatch(filterCreated(e.target.value))
+        }
 
 
     return (
         <div>
           <Link to="/pokemons">Crear Pokemon</Link>
            <h1>POKEMON GO!!</h1>
-
-          
-          
-
-           <button>Loading Pokemons</button>
+           <button onClick={e => {handleClick(e)}}>Loading Pokemons</button>
 
            <div>
                <select>
@@ -55,7 +59,7 @@ export default function Home(){
                </select>
             {/* intentar hacer un map a los types en orden alfabetico y por fuerza*/}
                <select > 
-                   <option value= 'All'>All</option>
+                   <option value= 'Types'>Types</option>
                    <option value= 'bug'>bug</option>
                    <option value= 'dark'>dark</option>
                    <option value= 'dragon'>dragon</option>
@@ -78,10 +82,10 @@ export default function Home(){
                    <option value= 'water'>water</option>
 
                </select>
-               <select>
+               <select onChange={e => handleFilterCreated(e)}>
                    <option value= 'All'>All</option>
-                   <option value= 'created'>Created</option>
-                   <option value= 'api'>Exist</option>
+                   <option value= 'Created'>Created</option>
+                   <option value= 'Api'>Exist</option>
                </select>
                <select>
                    <option value= 'a-z'>A-Z</option>
