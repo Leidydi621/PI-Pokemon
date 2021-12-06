@@ -1,10 +1,11 @@
 import React from "react";
 import {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {getPokemons, filterCreated} from "../actions";
+import {getPokemons, filterCreated, orderByName, getTypes} from "../actions";
 import {Link} from 'react-router-dom';
 import Card from './Card';
 import Paginado from './Paginado';
+import SearchBar from './SearchBar';
 
 export default function Home(){
 
@@ -15,7 +16,9 @@ export default function Home(){
         const indexOfLastPokemon = currentPage * pokemonsPerPage
         const indexOfFirsPokemon = indexOfLastPokemon - pokemonsPerPage
         const currentPokemons = allPokemons.slice(indexOfFirsPokemon, indexOfLastPokemon)
-        
+        const [orden, setOrden] = useState('')
+        const types = useSelector((state) => state.types)
+
 
        const prevPage = () => {
             if (currentPage > 0){
@@ -35,6 +38,12 @@ export default function Home(){
         useEffect(() => {
           dispatch(getPokemons());
         },[dispatch])
+
+    
+         useEffect(() => {
+             dispatch(getTypes());
+         }, [])
+     
     
         function handleClick(e){
             e.preventDefault();
@@ -44,7 +53,15 @@ export default function Home(){
         function handleFilterCreated (e){
             dispatch(filterCreated(e.target.value))
         }
+        
+        function handleSort(e){
+            e.preventDefault();
+            dispatch(orderByName(e.target.value))
+            setCurrentPage(1)
+            setOrden(`Ordenado'${e.target.value}`)
+        }
 
+ 
 
     return (
         <div>
@@ -53,42 +70,27 @@ export default function Home(){
            <button onClick={e => {handleClick(e)}}>Loading Pokemons</button>
 
            <div>
-               <select>
+            <SearchBar/>
+               <select onChange={e => {handleSort(e)}}>
                    <option value= 'asc'>Ascending</option>
                    <option value= 'desc'>Descending</option>
                </select>
-            {/* intentar hacer un map a los types en orden alfabetico y por fuerza*/}
-               <select > 
-                   <option value= 'Types'>Types</option>
-                   <option value= 'bug'>bug</option>
-                   <option value= 'dark'>dark</option>
-                   <option value= 'dragon'>dragon</option>
-                   <option value= 'electric'>electric</option>
-                   <option value= 'fairy'>fairy</option>
-                   <option value= 'fighting'>fighting</option>
-                   <option value= 'fire'>fire</option>
-                   <option value= 'flying'>flying</option>
-                   <option value= 'ghost'>ghost</option>           
-                   <option value= 'grass'>grass</option>
-                   <option value= 'ground'>ground</option>
-                   <option value= 'ice'>ice</option>
-                   <option value= 'normal'>normal</option>
-                   <option value= 'poison'>poison</option>
-                   <option value= 'psychic'>psychic</option>
-                   <option value= 'rock'>rock</option>
-                   <option value= 'shadow'>shadow</option>
-                   <option value= 'steel'>steel</option>
-                   <option value= 'unknown'>unknown</option>
-                   <option value= 'water'>water</option>
-
+               <select>
+                   <option></option>
                </select>
+
+               </div>
+                <select>
+                    {types.map(e=> (
+                        <option key={e.name} value={e.name}>{e.name}</option>
+                    ))}
+                </select>
+                <div>
+              
                <select onChange={e => handleFilterCreated(e)}>
                    <option value= 'All'>All</option>
                    <option value= 'Created'>Created</option>
                    <option value= 'Api'>Exist</option>
-               </select>
-               <select>
-                   <option value= 'a-z'>A-Z</option>
                </select>
                
                <br/>
@@ -99,13 +101,9 @@ export default function Home(){
                 allPokemons = {allPokemons.length}
                 paginado = {paginado}
                 />
-                <button onClick = {nextPage}>Next</button>
-           
-           
-           
-           
 
-           
+
+                <button onClick = {nextPage}>Next</button>
 
                
                     {currentPokemons.map(c => 
