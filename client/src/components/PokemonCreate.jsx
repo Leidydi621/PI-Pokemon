@@ -3,10 +3,20 @@ import {Link, useHistory} from "react-router-dom"
 import {postPoke, getTypes} from "../actions"
 import { useDispatch, useSelector } from "react-redux" 
 
+
+function validate(input){
+    let errors = {};
+    if(!input.name){
+        errors.name = "Name required"
+    } 
+   return errors;
+};
+
 export default function PokemonCreate(){
     const dispatch = useDispatch()
     const history = useHistory()
     const types = useSelector((state) => state.types)
+    const [errors, setErrors] = useState({});
 
     const [input, setInput] = useState({
         name: "",
@@ -21,53 +31,66 @@ export default function PokemonCreate(){
     
     })
 
+
+
     function handleChange(e){
         setInput({
             ...input,
             [e.target.name]:e.target.value
         })
-       
+        setErrors(validate({
+            ...input,
+            [e.target.name]:e.target.value
+        }))
+      
+      
     }
 
     function handleSelect(e){
         setInput({
             ...input,
-            types: [...input.types, e.target.name]
+            types: [...input.types, e.target.value]
         })
         
     }
 
     function handleSubmit(e){
-        e.preventDefault();
-      
-        dispatch(postPoke(input))
-        alert("Pokemon created!!")
-        setInput({
-            name: "",
-            types: [],
-            img: "",
-            hp: "",
-            attack: "",
-            defense: "",
-            speed: "",
-            height: "",
-            weight: ""
-        })
-        history.push('/home')
-    }
+    e.preventDefault();
+    dispatch(postPoke(input))
+    alert("Pokemon Created!")
+    setInput({
+        name: "",
+        types: [],
+        img: "",
+        hp: "",
+        attack: "",
+        defense: "",
+        speed: "",
+        height: "",
+        weight: ""  
+    })
+    history.push('/home')
+}
 
+
+    function handleDelete(e){
+        setInput({
+            ...input,
+            types: input.types.filter(type => type !== e)
+        })
+    }
 
 
 
     useEffect(() => {
         dispatch(getTypes());
-    }, [])
+    }, [dispatch])
 
     return (
         <div>
             <Link to="/home"><button>Back</button></Link>
             <h1>Create your Pokemon</h1>
-            <form onSubmit= {(e) => {handleSubmit(e)}}>
+            <form onSubmit= {handleSubmit}>
                 <div>
                 <label>Name:</label>
                 <input
@@ -76,6 +99,9 @@ export default function PokemonCreate(){
                 name = "name"  
                 onChange={handleChange}              
                 />
+                {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}
                 </div>
 
                 <div>
@@ -84,7 +110,7 @@ export default function PokemonCreate(){
                 type = "text"
                 value= {input.img}
                 name = "img"
-                 onChange={handleChange}                
+                 onChange={(e) => handleChange(e)}                
                 />
                 </div>
                 <div>
@@ -142,17 +168,25 @@ export default function PokemonCreate(){
                  onChange={handleChange}                
                 />
                 </div>
-                <a>Types:</a>
-                <select onChange={handleSelect}>
-                    {types.map(e=> (
-                        <option key={e.name} value={e.name}>{e.name}</option>
-                    ))}
+               
+                <select onChange={e => handleSelect(e)}>
+                {types.map((type) => (
+                     <option key={type.id} value={type.name}>{type.name}</option>
+                ))}
                 </select>
-
                 
                 <button type= 'submit'>Create Pokemon</button>
 
             </form>
+
+            {input.types.map(el =>
+                <div className= 'divTyp' key={el}>
+                    <p key={el}>{el}</p>
+                    <button key={el} className="botonX" onClick={()=> handleDelete(el)}>x</button>
+                </div>
+            )}
+
+
         </div>
     )
 }

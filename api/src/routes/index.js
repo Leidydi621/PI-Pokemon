@@ -69,15 +69,19 @@ router.get('/pokemons', async(req, res)=>{
     let routP = pokemonsTotal.map(el => {
         return {
             name: el.name,
+            id: el.id,
+            types: el.types,
             img: el.img,
-            types: el.types
+            attack: el.attack,
+            createdInDb: el.createdInDb
+            
         }
     })
     if(name){
         let pokemonName = await routP.filter(el => el.name.toLowerCase().includes(name.toLowerCase()))
         pokemonName ?
         res.status(200).send(pokemonName) :
-        res.status(404).send("This Pokemon doesn't exist");       
+        res.status(404).send("This Pokemon doesn't exist");     
     }else {
         res.status(200).send(routP)
     }
@@ -115,20 +119,34 @@ router.get('/types', async (req, res)=>{
 
    const allTypes = await Type.findAll();
    res.send(allTypes);
-   console.log(allTypes);
+ 
    
 })
 
 
 router.post('/pokemons', async (req, res) => {
- 
-  
-  if (req.body){
-    console.log('datos por body', req.body);
-    Pokemon.create(req.body).then(pokemonCreated => res.send(pokemonCreated))
-  }
 
-})
-
+    let {                    
+        types,
+       
+    } = req.body         // Se trae la info por body
+    
+    let pokemonsCreated = await Pokemon.create ({    // Crea el pokemon con esos datos
+        name: req.body.name.toLowerCase(),
+        img: req.body.img,
+        hp: Number(req.body.hp),
+        attack: Number(req.body.attack),
+        defense: Number(req.body.defense),
+        speed: Number(req.body.speed),
+        height: Number(req.body.height),
+        weight: Number(req.body.weight),
+      
+    })
+    let typeDb = await Type.findAll({             // Se trae los types guardados anteriormente en la db
+        where: {name: types}
+    })
+    pokemonsCreated.addType(typeDb)               // Agrega los types
+    res.send(pokemonsCreated)
+    });
 
 module.exports = router;

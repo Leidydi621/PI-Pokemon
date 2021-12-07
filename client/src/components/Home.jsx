@@ -1,7 +1,7 @@
 import React from "react";
 import {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {getPokemons, filterCreated, orderByName, getTypes} from "../actions";
+import {getPokemons, filterCreated, orderByName, getTypes, getAttackPokemon, filterTypes} from "../actions";
 import {Link} from 'react-router-dom';
 import Card from './Card';
 import Paginado from './Paginado';
@@ -12,24 +12,26 @@ export default function Home(){
         const dispatch = useDispatch()
         const allPokemons = useSelector(state => state.pokemon)
         const [currentPage, setCurrentPage] = useState(1)
-        const [pokemonsPerPage, setPokemonsPerPage] = useState(12)
+        const [pokemonsPerPage] = useState(12)
         const indexOfLastPokemon = currentPage * pokemonsPerPage
         const indexOfFirsPokemon = indexOfLastPokemon - pokemonsPerPage
         const currentPokemons = allPokemons.slice(indexOfFirsPokemon, indexOfLastPokemon)
         const [orden, setOrden] = useState('')
+        const [orden2, setOrden2] = useState('')
         const types = useSelector((state) => state.types)
 
-
+        //paginado previo
        const prevPage = () => {
             if (currentPage > 0){
                 setCurrentPage(currentPage-1);
             }
         }
-
+        // paginado siguiente
         const nextPage = () => {
             setCurrentPage(currentPage+1);
         }
 
+        //paginado por numero de paginas
         const paginado =  (pageNumber) => {
             setCurrentPage(pageNumber)
         }
@@ -42,8 +44,8 @@ export default function Home(){
     
          useEffect(() => {
              dispatch(getTypes());
-         }, [])
-     
+         }, [dispatch])
+
     
         function handleClick(e){
             e.preventDefault();
@@ -53,6 +55,10 @@ export default function Home(){
         function handleFilterCreated (e){
             dispatch(filterCreated(e.target.value))
         }
+
+        function hadleFilterTypes(e){
+            dispatch(filterTypes(e.target.value))
+        }
         
         function handleSort(e){
             e.preventDefault();
@@ -60,6 +66,14 @@ export default function Home(){
             setCurrentPage(1)
             setOrden(`Ordenado'${e.target.value}`)
         }
+
+        function hadleSortByAttack(e){
+            e.preventDefault();
+            dispatch(getAttackPokemon(e.target.value))
+            setCurrentPage(1)
+            setOrden(`Ordenado${e.target.value}`)
+        }
+
 
  
 
@@ -75,12 +89,13 @@ export default function Home(){
                    <option value= 'asc'>Ascending</option>
                    <option value= 'desc'>Descending</option>
                </select>
-               <select>
-                   <option></option>
+               <select onChange={e => {hadleSortByAttack(e)}}>
+                   <option value= 'Minor attack'>Minor attack</option>
+                   <option value= 'Major attack'>Major attack</option>
                </select>
 
                </div>
-                <select>
+               <select onChange={hadleFilterTypes}>
                     {types.map(e=> (
                         <option key={e.name} value={e.name}>{e.name}</option>
                     ))}
@@ -101,21 +116,20 @@ export default function Home(){
                 allPokemons = {allPokemons.length}
                 paginado = {paginado}
                 />
-
-
                 <button onClick = {nextPage}>Next</button>
 
                
-                    {currentPokemons.map(c => 
+                    {currentPokemons?.map(c => {
                        
-                       <div key={c.name}>
-                         <Card name={c.name} img={c.img} types={c.types.map( e => e.name + " ")}/>
-                         
-                        </div> 
-                      
-                       
+                        return(
+                        <Link to = {'/detail/' + c.id} key={c.id}>
+                        <Card name={c.name} img={c.img} types={c.types.map( e => e.name + " ")}/>
+                        </Link>
+    
+                     );             
+                     })}                       
                    
-                    )}
+                
                 
             
 

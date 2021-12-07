@@ -13,7 +13,7 @@ export default function SearchBar(){
     function handleInputPoke(e){
         e.preventDefault();
         setName(e.target.value);
-        console.log(name)
+        
     }
 
     function handleSubmit(e){
@@ -29,7 +29,7 @@ export default function SearchBar(){
             placeholder="Search..."
             onChange={(e) => handleInputPoke(e)}
             />
-            <button type= 'submit' onClick={(e) => handleSubmit(e)}>"Search"</button>
+            <button type= 'submit' onClick={(e) => handleSubmit(e)}>Search</button>
         </div>
     )
 }
