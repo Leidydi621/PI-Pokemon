@@ -5,12 +5,17 @@ import { useDispatch, useSelector } from "react-redux"
 
 import style from './PokemonCreate.module.css';
 
+//Funcion controladora 
 
 function validate(input){
     let errors = {};
-    if(!input.name){
-        errors.name = "Name required"
-    } 
+    if(!input.name){errors.name = "Only required"} 
+    if (!input.hp){errors.hp = "Only number"}
+    if (!input.attack){errors.attack = "Only number"};
+    if (!input.defense){errors.defense = "Only number"};
+    if (!input.speed){errors.speed = "Only number"};
+    if (!input.height){errors.height = "Only number"};
+    if (!input.weight){errors.weight = "Only number"};
    return errors;
 };
 
@@ -98,6 +103,7 @@ export default function PokemonCreate(){
                 <div>
                 <label>Name: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "text"
                 value= {input.name}
                 name = "name"  
@@ -111,68 +117,93 @@ export default function PokemonCreate(){
                 <div>
                 <label>Img: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "text"
                 value= {input.img}
                 name = "img"
                  onChange={(e) => handleChange(e)}                
                 />
+                  {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}
                 </div>
                 <div>
                 <label>HP: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "number"
                 value= {input.hp}
                 name = "hp" 
                  onChange={handleChange}               
                 />
+                  {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}
                 </div>
                 <div>
                 <label>Attack: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "number"
                 value= {input.attack}
                 name = "attack" 
                  onChange={handleChange}               
                 />
+                  {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}
                 </div>
                 <div>
                 <label>Defense: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "number"
                 value= {input.defense}
                 name = "defense"
                  onChange={handleChange}                
                 />
+                  {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}
                 </div>
                 <div>
                 <label>Speed: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "number"
                 value= {input.speed}
                 name = "speed"
                  onChange={handleChange}                
                 />
-            
-                </div>
+                {e(
+                <p className= 'error'>{errors.name}</p>
+                )}                </div>
                 <div>
                 <label>Height: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "number"
                 value= {input.height}
                 name = "height" 
                  onChange={handleChange}               
                 />
-                </div>
+                {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}    
+                </div>                
                 <div>
                 <label>Weight: </label>
                 <input
+                className= {errors.name?style.err:''}
                 type = "number"
                 value= {input.weight}
                 name = "weight"
                  onChange={handleChange}                
                 />
-                </div>
-               
+                 {errors.name && (
+                    <p className= 'error'>{errors.name}</p>
+                )}    
+                </div>               
                 <select onChange={e => handleSelect(e)}>
                 {types.map((type) => (
                      <option key={type.id} value={type.name}>{type.name}</option>
