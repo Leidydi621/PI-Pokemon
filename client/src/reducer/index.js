@@ -56,13 +56,15 @@ function rootReducer (state = initialState, action){
             }
 
         case FILTER_TYPES:
-
-            const typesFilter = action.payload === state.types.filter(e => e.name) 
-
-            return{
-                ...state,
-                types: typesFilter
-            }
+            const result= action.payload
+            const typesFilter =  state.allPokemons.filter(el => el.types.some(e => e.name === result)).map(el => console.log(el))
+            
+                return{
+                    ...state,
+                    pokemon: typesFilter
+                
+                }
+        
 
         case ORDER_BY_NAME:
             let sortedArr = action.payload === 'asc'?
@@ -117,7 +119,7 @@ function rootReducer (state = initialState, action){
             }
 
             case GET_DETAILS:
-                let detalle = action.payload
+                
                
                 return {
                     ...state,

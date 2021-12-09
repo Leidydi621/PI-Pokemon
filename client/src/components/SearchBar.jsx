@@ -3,6 +3,8 @@ import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {getNamePokemon} from '../actions';
 
+import styleSb from './SearchBar.module.css';
+
 
 export default function SearchBar(){
 
@@ -23,7 +25,7 @@ export default function SearchBar(){
     }
 
     return(
-        <div>
+        <div className={styleSb.busqueda}>
             <input 
             type="text" 
             placeholder="Search..."

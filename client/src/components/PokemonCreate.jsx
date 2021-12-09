@@ -3,6 +3,8 @@ import {Link, useHistory} from "react-router-dom"
 import {postPoke, getTypes} from "../actions"
 import { useDispatch, useSelector } from "react-redux" 
 
+import style from './PokemonCreate.module.css';
+
 
 function validate(input){
     let errors = {};
@@ -87,12 +89,14 @@ export default function PokemonCreate(){
     }, [dispatch])
 
     return (
-        <div>
-            <Link to="/home"><button>Back</button></Link>
-            <h1>Create your Pokemon</h1>
+        <div className={style.createPoke}>
+            
+            <img src="https://fontmeme.com/permalink/211208/46c0edb7f11a935a7ae91be6e0fe7edd.png" alt="fuente-pokemon" border="0"/>
+          
+          
             <form onSubmit= {handleSubmit}>
                 <div>
-                <label>Name:</label>
+                <label>Name: </label>
                 <input
                 type = "text"
                 value= {input.name}
@@ -105,7 +109,7 @@ export default function PokemonCreate(){
                 </div>
 
                 <div>
-                <label>Img:</label>
+                <label>Img: </label>
                 <input
                 type = "text"
                 value= {input.img}
@@ -114,7 +118,7 @@ export default function PokemonCreate(){
                 />
                 </div>
                 <div>
-                <label>HP:</label>
+                <label>HP: </label>
                 <input
                 type = "number"
                 value= {input.hp}
@@ -123,7 +127,7 @@ export default function PokemonCreate(){
                 />
                 </div>
                 <div>
-                <label>Attack:</label>
+                <label>Attack: </label>
                 <input
                 type = "number"
                 value= {input.attack}
@@ -132,7 +136,7 @@ export default function PokemonCreate(){
                 />
                 </div>
                 <div>
-                <label>defense:</label>
+                <label>Defense: </label>
                 <input
                 type = "number"
                 value= {input.defense}
@@ -141,7 +145,7 @@ export default function PokemonCreate(){
                 />
                 </div>
                 <div>
-                <label>Speed:</label>
+                <label>Speed: </label>
                 <input
                 type = "number"
                 value= {input.speed}
@@ -151,7 +155,7 @@ export default function PokemonCreate(){
             
                 </div>
                 <div>
-                <label>Height:</label>
+                <label>Height: </label>
                 <input
                 type = "number"
                 value= {input.height}
@@ -160,7 +164,7 @@ export default function PokemonCreate(){
                 />
                 </div>
                 <div>
-                <label>Weight:</label>
+                <label>Weight: </label>
                 <input
                 type = "number"
                 value= {input.weight}
@@ -174,19 +178,28 @@ export default function PokemonCreate(){
                      <option key={type.id} value={type.name}>{type.name}</option>
                 ))}
                 </select>
-                
-                <button type= 'submit'>Create Pokemon</button>
+                <br/>
+                <br/>
+                <button className={style.btn} type= 'submit'>Create Pokemon</button>
 
             </form>
+            
 
-            {input.types.map(el =>
+                {input.types.map(el =>
                 <div className= 'divTyp' key={el}>
                     <p key={el}>{el}</p>
                     <button key={el} className="botonX" onClick={()=> handleDelete(el)}>x</button>
                 </div>
-            )}
-
-
+                 )}
+            
+            <br/>
+            <br/>
+            <div>
+            <Link to="/home">
+                <button className={style.btn}>Back</button>
+            </Link>
+            </div>
         </div>
     )
 }
+

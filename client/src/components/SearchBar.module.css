@@ -1,0 +1,16 @@
+.busqueda {
+    transform: translatex(-10%) translatey(6%);
+    position: absolute;
+    background: url(https://particles.js.org/images/background3.jpg);
+    background: rgba(255, 255, 255, 0.685);
+    padding: 1vh 0.5vw;
+    border-radius: 10px;
+    box-shadow: 0 0 0.6rem 0.01rem black;
+    margin-left: 30vh;
+}
+
+.busqueda button {
+  background-image: url(https://st2.depositphotos.com/3769671/7957/v/600/depositphotos_79574646-stock-illustration-paper-texture-template.jpg);
+  width: 100%;
+}
+  
